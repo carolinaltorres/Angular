@@ -1,10 +1,18 @@
-import { Directive } from '@angular/core';
+import { Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 
 @Directive({
-  selector: '[appFor]'
+  selector: "[myFor]",
 })
-export class ForDirective {
+export class ForDirective implements OnInit {
+  @Input("myForEm") numbers: number[];
 
-  constructor() { }
+  constructor(private container: ViewContainerRef, private template: TemplateRef<any>) {
+    this.numbers = [];
+  }
 
+  ngOnInit(): void {
+    for(let number of this.numbers) {
+      this.container.createEmbeddedView(this.template, { $implicit:number });
+    }
+  }
 }
